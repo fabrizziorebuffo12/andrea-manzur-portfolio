@@ -38,6 +38,7 @@ a.splash-wrapper:active {
   text-decoration: none;
 }
 
+/* Ratio real del PDF: 62.69cm x 17.46cm ≈ 3.59:1 */
 .manzur-title {
   font-family: var(--font-title);
   font-size: clamp(3rem, 12vw, 9rem);
@@ -66,13 +67,14 @@ a.splash-wrapper:active {
   max-width: 1400px;
 }
 
+/* Ratio real del PDF: 16.78cm x 2.94cm por nombre */
 .project-name {
   font-family: var(--font-title);
   font-size: clamp(1.4rem, 2.6vw, 2.4rem);
   text-align: center;
   color: var(--color-black);
   text-decoration: none;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, color 0.25s ease;
   display: inline-block;
 }
 
@@ -81,10 +83,16 @@ a.splash-wrapper:active {
   color: var(--color-black);
 }
 
+/*
+  El PDF pide que al hover crezca a 17.61cm x 3.09cm (≈ +5%) Y cambie a borgoña.
+  Andrea (la clienta) pidió después que el color se quede en negro — dejamos esa
+  decisión activa. Si querés volver al color del PDF, descomentá la línea de abajo.
+*/
 .project-name:hover,
 .project-name:focus {
   transform: scale(1.05);
   color: var(--color-black);
+  /* color: var(--color-maroon); */
 }
 
 @media (max-width: 768px) {
@@ -102,31 +110,148 @@ a.splash-wrapper:active {
 /* ---------- PÁGINA DE PROYECTO (CARRUSEL) ---------- */
 .project-wrapper {
   min-height: 100vh;
-  padding: 5vh 4vw;
-}
-
-.project-name-frame {
-  border: 3px solid var(--color-black);
-  padding: 0.6em 2em;
-  margin-bottom: 5vh;
-}
-
-.project-name-text {
-  font-family: var(--font-title);
-  font-size: clamp(1.2rem, 2.6vw, 2.2rem);
-  margin: 0;
-  text-align: center;
+  padding: 4rem 4vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
 }
 
 .carousel-stage {
   position: relative;
   width: 100%;
-  max-width: 1100px;
-  height: 45vh;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.video-item {
+  position: absolute;
+  aspect-ratio: 16 / 9;
+  width: 60%;
+  border: 4px solid var(--color-black);
+  background-color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-body);
+  transition: transform 0.6s ease, opacity 0.6s ease, filter 0.6s ease;
+}
+
+.video-item i {
+  font-size: 2.2rem;
+  opacity: 0.85;
+}
+
+.video-item.center {
+  transform: translateX(0) scale(1);
+  z-index: 3;
+  opacity: 1;
+}
+
+.video-item.left {
+  transform: translateX(-70%) scale(0.75);
+  z-index: 2;
+  opacity: 0.5;
+  filter: brightness(0.6);
+}
+
+.video-item.right {
+  transform: translateX(70%) scale(0.75);
+  z-index: 2;
+  opacity: 0.5;
+  filter: brightness(0.6);
+}
+
+.video-item.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.carousel-controls {
+  display: flex;
+  gap: 3vw;
+}
+
+.arrow-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--color-black);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.arrow-btn:hover {
+  color: var(--color-maroon);
+  transform: scale(1.15);
+}
+
+.galeria-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-black);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.galeria-link i {
+  font-size: 0.8em;
+  transition: transform 0.2s ease;
+}
+
+.galeria-link:hover {
+  color: var(--color-maroon);
+}
+
+.galeria-link:hover i {
+  transform: translateX(3px);
+}
+
+/* Marco negro igual al de los videos, tal como pide el PDF */
+.project-name-frame {
+  border: 4px solid var(--color-black);
+  padding: 0.6em 2em;
+  transition: opacity 0.4s ease;
+}
+
+.project-name-frame.hidden {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.project-name-text {
+  font-family: var(--font-title);
+  font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin: 0;
+}
+
+/* Ratio real del PDF: 30.02cm x 26.14cm */
+.carousel-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  aspect-ratio: 30.02 / 26.14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, white 12%, white 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, white 12%, white 88%, transparent);
 }
 
 .video-item {
@@ -176,7 +301,6 @@ a.splash-wrapper:active {
 .carousel-controls {
   display: flex;
   gap: 3vw;
-  margin-top: 4vh;
 }
 
 .arrow-btn {
@@ -193,16 +317,241 @@ a.splash-wrapper:active {
   transform: scale(1.15);
 }
 
+.galeria-link {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-black);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.galeria-link i {
+  font-size: 0.8em;
+  transition: transform 0.2s ease;
+}
+
+.galeria-link:hover {
+  color: var(--color-maroon);
+}
+
+.galeria-link:hover i {
+  transform: translateX(3px);
+}
+
+/* ---------- INICIALES A.M (reutilizado en varias páginas) ---------- */
 .am-initials-link {
   font-family: var(--font-title);
   font-size: 1.4rem;
   color: var(--color-maroon);
   text-decoration: none;
-  margin-top: 5vh;
   transition: transform 0.2s ease;
   display: inline-block;
 }
 
 .am-initials-link:hover {
   transform: scale(1.1);
+}
+
+/* ---------- GALERÍA DEL PROYECTO ---------- */
+.galeria-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4vw;
+  padding: 4rem 4vw 3rem;
+}
+
+.galeria-descripcion {
+  flex: 0 0 320px;
+  max-width: 340px;
+}
+
+/* Mismo tamaño que .project-name-text: 16.78cm x 2.94cm en el PDF */
+.galeria-nombre {
+  font-family: var(--font-title);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.6rem;
+}
+
+.galeria-texto {
+  font-family: 'Kalam', cursive;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-black);
+  display: inline;
+}
+
+.galeria-cursor {
+  font-family: 'Kalam', cursive;
+  font-size: 1.15rem;
+  margin-left: 2px;
+  color: var(--color-maroon);
+  animation: galeria-blink 0.9s steps(1) infinite;
+}
+
+@keyframes galeria-blink {
+  50% { opacity: 0; }
+}
+
+.galeria-renders {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Ratio real del PDF: 26.17cm x 17.03cm */
+.galeria-stage {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 26.17 / 17.03;
+  border: 4px solid var(--color-black);
+  overflow: hidden;
+}
+
+.galeria-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background-color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.galeria-item.active {
+  opacity: 1;
+}
+
+.galeria-item i {
+  font-size: 2.6rem;
+}
+
+.galeria-item span {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.galeria-am-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .galeria-wrapper {
+    flex-direction: column;
+  }
+  .galeria-descripcion {
+    flex: none;
+    max-width: none;
+  }
+}
+
+/* ---------- ANDREA MANZUR (última página del PDF) ---------- */
+.am-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.am-hero {
+  flex: 1;
+}
+
+.am-title {
+  font-family: var(--font-title);
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  letter-spacing: -0.02em;
+  text-align: center;
+  line-height: 1;
+}
+
+.am-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4vw 5vh;
+}
+
+.am-footer::before {
+  content: "";
+  position: absolute;
+  left: 4vw;
+  right: 4vw;
+  top: 50%;
+  border-top: 1px solid var(--color-black);
+  z-index: 0;
+}
+
+/* Ratio real del PDF: 4.77cm x 1.97cm por texto (menu/A.M/contact) */
+.am-footer-link {
+  position: relative;
+  z-index: 1;
+  background-color: #ffffff;
+  padding: 0 1em;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-black);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Hover del PDF: crece a 5.14cm x 2.12cm ≈ +7.7% */
+.am-footer-link:hover {
+  transform: scale(1.077);
+}
+
+.am-footer-initials {
+  font-family: var(--font-title);
+  color: var(--color-maroon);
+}
+
+.am-contact-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  background-color: #ffffff;
+  padding: 2.5em 4vw;
+  text-align: right;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.am-contact-panel.open {
+  transform: translateY(0);
+}
+
+.am-contact-tagline {
+  font-family: var(--font-body);
+  font-weight: 700;
+  margin-bottom: 0.4em;
+}
+
+.am-contact-item,
+.am-contact-location {
+  font-family: var(--font-body);
+  color: #333;
+  margin: 0.15em 0;
 }
